@@ -5,6 +5,7 @@ import (
 
 	"github.com/glestaris/ice-agent/ice"
 	"github.com/glestaris/ice-agent/ssh"
+	"github.com/glestaris/ice-agent/state"
 	"github.com/urfave/cli"
 )
 
@@ -43,6 +44,11 @@ var RegisterSelfCommand = cli.Command{
 		}
 		inst.SSHAuthorizedFingerprint, err = ssh.AuthorizedFingerprint(context.TODO(), inst.SSHUsername)
 		if err != nil {
+			return cli.NewExitError("ERROR", 1)
+		}
+
+		// Write the fake instance ID
+		if err := state.WriteInstanceID(context.TODO(), "fake-inst-id"); err != nil {
 			return cli.NewExitError("ERROR", 1)
 		}
 
