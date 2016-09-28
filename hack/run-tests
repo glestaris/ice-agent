@@ -1,0 +1,122 @@
+#!/bin/bash
+set -e
+BASE_PATH=$(cd $(dirname $BASH_SOURCE)/..; pwd)
+source $BASE_PATH/hack/message_printing.sh
+
+usage() {
+  echo "Usage:"
+  echo "run-tests               --- run all the tests"
+  echo "run-tests -p <Path>     --- only run tests in the givel path"
+  echo "run-tests -n            --- run tests natively"
+  echo "run-tests -d            --- debug mode"
+  echo "run-tests -h            --- print help menu"
+}
+
+run_docker_tests() {
+  cmd="docker run"
+  cmd=$cmd" -v $BASE_PATH:/opt/ice-agent"
+  cmd=$cmd" -w /opt/ice-agent"
+  cmd=$cmd" --name ice-agent-test"
+  cmd=$cmd" --rm"
+  cmd=$cmd" golang:1.7"
+  cmd=$cmd" ./hack/run-tests $ARGS -n"
+
+  debug "About to run '$cmd'"
+  debug "--------- Docker output START ---------"
+
+  set +e
+  eval $cmd
+  GOTEST_EXIT_CODE=$?
+  set -e
+
+  debug "--------- Docker output END ---------"
+  info "Docker exited with code $GOTEST_EXIT_CODE"
+}
+
+run_sudo_native_tests() {
+  useradd -m ice || true
+  su --preserve-environment -c "./hack/run-tests $ARGS" ice
+}
+
+run_native_tests() {
+  gopath=$(mktemp -d)
+  repo_path=$gopath/src/github.com/glestaris/ice-agent
+
+  mkdir -p $(dirname $repo_path)
+  ln -s $PWD $repo_path
+
+  cmd="go test"
+  if [ "$TEST_PATH" != "" ]; then
+    cmd=$cmd" $TEST_PATH"
+  else
+    cmd=$cmd" \$(go list ./... | grep -v vendor)"
+  fi
+
+  [ -z $GOROOT ] && export GOROOT=/usr/local/go
+  export GOPATH=$gopath
+  export PATH=$PATH:$GOROOT/bin
+
+  cd $repo_path
+  debug "About to run '$cmd' in directory '$repo_path'"
+  debug "--------- go test output START ---------"
+
+  set +e
+  eval $cmd
+  GOTEST_EXIT_CODE=$?
+  set -e
+
+  debug "--------- go test output END ---------"
+  debug "go test exited with code $GOTEST_EXIT_CODE"
+
+  cd /
+  rm -rf $gopath
+}
+
+run_tests() {
+  if [ $NATIVE -eq 0 ]; then
+    run_docker_tests
+    return
+  fi
+
+  if [ $(whoami) == "root" ]; then
+    run_sudo_native_tests
+    return
+  fi
+
+  run_native_tests
+}
+
+ARGS=$@
+TEST_PATH=""
+NATIVE=0
+while getopts "p:ndh" OPTION
+do
+  case $OPTION in
+    p)
+      TEST_PATH=$OPTARG
+      ;;
+    n)
+      NATIVE=1
+      ;;
+    d)
+      DEBUG=1
+      ;;
+    h)
+      usage
+      exit
+      ;;
+    *)
+      usage
+      exit
+      ;;
+  esac
+done
+
+debug "test_path='$TEST_PATH'"
+debug "native=$NATIVE"
+debug "debug=$DEBUG"
+
+# some action...
+run_tests
+
+exit $GOTEST_EXIT_CODE

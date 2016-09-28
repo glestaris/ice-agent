@@ -1,0 +1,87 @@
+#!/bin/bash
+set -e
+BASE_PATH=$(cd $(dirname $BASH_SOURCE)/..; pwd)
+source $BASE_PATH/hack/message_printing.sh
+
+usage() {
+  echo "Usage:"
+  echo "lint                    --- lint the Go code"
+  echo "lint -p <path>          --- lint only given package"
+  echo "lint -d                 --- debug mode"
+  echo "lint -h                 --- print help menu"
+}
+
+install_metalinter() {
+  if ! which gometalinter; then
+    warning "No metalinter found, installing..."
+    go get -u github.com/alecthomas/gometalinter
+    gometalinter --update --install
+  fi
+}
+
+lint_single_dir() {
+  dir_path=$1
+
+  cmd="gometalinter"
+  cmd=$cmd" --disable=gotype"
+  cmd=$cmd" --disable=gas"
+  cmd=$cmd" --deadline 10s"
+  cmd=$cmd" --tests"
+  cmd=$cmd" $dir_path"
+
+  debug "--------- Gometalinter output START ---------"
+  set +e
+  eval $cmd
+  gmtl_exit_code=$?
+  set -e
+  debug "--------- Gometalinter output END ---------"
+
+  return $gmtl_exit_code
+}
+
+lint_all() {
+  pushd $BASE_PATH
+    go list ./... | grep -v vendor | while read pkg; do
+      dir_path="."$(echo $pkg | sed -e 's/github.com\/glestaris\/ice-agent//')
+      info "Linting package '$pkg' --> '$dir_path'"
+
+      lint_single_dir $dir_path
+      success "Package '$dir_path' is OK!"
+    done
+  popd
+}
+
+run() {
+  if [ "$LINT_PATH" != "" ]; then
+    lint_single_dir $LINT_PATH
+    return
+  fi
+
+  lint_all
+}
+
+LINT_PATH=""
+while getopts "p:dh" OPTION
+do
+  case $OPTION in
+    p)
+      LINT_PATH=$OPTARG
+      ;;
+    d)
+      DEBUG=1
+      ;;
+    h)
+      usage
+      exit
+      ;;
+    *)
+      usage
+      exit
+      ;;
+  esac
+done
+
+debug "debug=$DEBUG"
+debug "lint_path='$LINT_PATH'"
+
+run

@@ -1,0 +1,6 @@
+package: github.com/glestaris/ice-agent
+import:
+- package: github.com/urfave/cli
+- package: golang.org/x/crypto
+  subpackages:
+  - ssh/keys

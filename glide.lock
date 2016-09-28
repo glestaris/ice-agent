@@ -1,0 +1,14 @@
+hash: 6d0adbf29c242159ffc9a0482158994605473aeba42e1a559c8f3707263f0c8a
+updated: 2016-09-28T23:18:19.67100391+01:00
+imports:
+- name: github.com/urfave/cli
+  version: d53eb991652b1d438abdd34ce4bfa3ef1539108e
+- name: golang.org/x/crypto
+  version: 7ac97ebec9cb7ab8b44b571f6ec4cee333dc4309
+  subpackages:
+  - ssh/keys
+  - ssh
+  - curve25519
+  - ed25519
+  - ed25519/internal/edwards25519
+devImports: []
