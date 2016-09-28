@@ -11,14 +11,6 @@ usage() {
   echo "lint -h                 --- print help menu"
 }
 
-install_metalinter() {
-  if ! which gometalinter; then
-    warning "No metalinter found, installing..."
-    go get -u github.com/alecthomas/gometalinter
-    gometalinter --update --install
-  fi
-}
-
 lint_single_dir() {
   dir_path=$1
 

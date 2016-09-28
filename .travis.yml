@@ -6,6 +6,8 @@ go: 1.7
 install:
   - curl https://glide.sh/get | sh
   - make deps
+  - go get -u github.com/alecthomas/gometalinter
+  - gometalinter --update --install
 script:
   - make lint
   - make test
