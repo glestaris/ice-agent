@@ -6,6 +6,8 @@ import (
 	"crypto/md5"
 	"encoding/hex"
 	"errors"
+	"fmt"
+	"io"
 	"os"
 	"os/user"
 	"path/filepath"
@@ -32,6 +34,10 @@ func firstAuthorizedKeysLine(authorizedKeysPath string) ([]byte, error) {
 	authorizedKeysReader := bufio.NewReader(authorizedKeysFile)
 	line, isPrefix, err := authorizedKeysReader.ReadLine()
 	if err != nil {
+		if err == io.EOF {
+			return nil, fmt.Errorf("file `%s` is empty", authorizedKeysPath)
+		}
+
 		return nil, err
 	}
 	if isPrefix {
