@@ -30,14 +30,17 @@ var RegisterSelfCommand = cli.Command{
 	},
 
 	Action: func(ctx *cli.Context) error {
-		var err error
+		apiEndpoint := ctx.String("api-endpoint")
+		sessionID := ctx.String("session-id")
+		tags := ctx.StringSlice("tag")
 
 		inst := ice.Instance{
-			SessionID: ctx.String("session-id"),
-			Tags:      ctx.StringSlice("tag"),
+			SessionID: sessionID,
+			Tags:      tags,
 		}
 
 		// SSH
+		var err error
 		inst.SSHUsername, err = ssh.Username(context.TODO())
 		if err != nil {
 			return cli.NewExitError("ERROR", 1)
@@ -47,8 +50,15 @@ var RegisterSelfCommand = cli.Command{
 			return cli.NewExitError("ERROR", 1)
 		}
 
-		// Write the fake instance ID
-		if err := state.WriteInstanceID(context.TODO(), "fake-inst-id"); err != nil {
+		// Store the instance over
+		iceClient := ice.NewClient(apiEndpoint)
+		instID, err := iceClient.StoreInstance(context.TODO(), inst)
+		if err != nil {
+			return cli.NewExitError("ERROR", 1)
+		}
+
+		// Write the instance ID
+		if err := state.WriteInstanceID(context.TODO(), instID); err != nil {
 			return cli.NewExitError("ERROR", 1)
 		}
 
