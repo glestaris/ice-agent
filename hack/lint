@@ -16,6 +16,7 @@ lint_single_dir() {
 
   cmd="gometalinter"
   cmd=$cmd" --disable=gotype"
+  cmd=$cmd" --disable=dupl"
   cmd=$cmd" --disable=gas"
   cmd=$cmd" --deadline 10s"
   cmd=$cmd" --tests"
