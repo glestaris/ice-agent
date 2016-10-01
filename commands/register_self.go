@@ -2,7 +2,9 @@ package commands
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
+	"os"
 
 	"github.com/glestaris/ice-agent/ice"
 	"github.com/glestaris/ice-agent/network"
@@ -79,6 +81,12 @@ var RegisterSelfCommand = cli.Command{
 
 		// Write the instance ID
 		if err := state.WriteInstanceID(context.TODO(), instID); err != nil {
+			return cli.NewExitError(fmt.Sprintf("ERROR: %s", err), 1)
+		}
+
+		// Print output
+		inst.ID = instID
+		if err := json.NewEncoder(os.Stdout).Encode(inst); err != nil {
 			return cli.NewExitError(fmt.Sprintf("ERROR: %s", err), 1)
 		}
 

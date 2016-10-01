@@ -12,6 +12,7 @@ type InstanceNetwork struct {
 
 // Instance describes an iCE instance.
 type Instance struct {
+	ID                       string            `json:"id,omitempty"`
 	SessionID                string            `json:"session_id"`
 	Networks                 []InstanceNetwork `json:"networks"`
 	PublicIPAddr             net.IP            `json:"public_ip_addr"`
