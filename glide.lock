@@ -1,8 +1,14 @@
-hash: 6d0adbf29c242159ffc9a0482158994605473aeba42e1a559c8f3707263f0c8a
-updated: 2016-09-28T23:18:19.67100391+01:00
+hash: 5dfe059d4e6676291317ae25d10a88f74addae53b83cb196b18c6e6955af29e8
+updated: 2016-10-01T17:09:57.471653351+01:00
 imports:
 - name: github.com/urfave/cli
   version: d53eb991652b1d438abdd34ce4bfa3ef1539108e
+- name: github.com/vishvananda/netlink
+  version: da7420cab5e209195f5f7387fccd4c7f48758d30
+  subpackages:
+  - '...'
+- name: github.com/vishvananda/netns
+  version: 8ba1072b58e0c2a240eb5f6120165c7776c3e7b8
 - name: golang.org/x/crypto
   version: 7ac97ebec9cb7ab8b44b571f6ec4cee333dc4309
   subpackages:

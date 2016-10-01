@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/glestaris/ice-agent/ice"
+	"github.com/glestaris/ice-agent/network"
 	"github.com/glestaris/ice-agent/ssh"
 	"github.com/glestaris/ice-agent/state"
 	"github.com/urfave/cli"
@@ -45,13 +46,31 @@ var RegisterSelfCommand = cli.Command{
 		if err != nil {
 			return cli.NewExitError("ERROR", 1)
 		}
-		inst.SSHAuthorizedFingerprint, err = ssh.AuthorizedFingerprint(context.TODO(), inst.SSHUsername)
+		inst.SSHAuthorizedFingerprint, err = ssh.AuthorizedFingerprint(
+			context.TODO(), inst.SSHUsername,
+		)
+		if err != nil {
+			return cli.NewExitError("ERROR", 1)
+		}
+
+		iceClient := ice.NewClient(apiEndpoint)
+		// Network
+		inst.Networks, err = network.Networks(context.TODO())
+		if err != nil {
+			return cli.NewExitError("ERROR", 1)
+		}
+		inst.PublicIPAddr, err = iceClient.MyIP(context.TODO())
+		if err != nil {
+			return cli.NewExitError("ERROR", 1)
+		}
+		inst.PublicReverseDNS, err = network.ReverseDNS(
+			context.TODO(), inst.PublicIPAddr.String(),
+		)
 		if err != nil {
 			return cli.NewExitError("ERROR", 1)
 		}
 
 		// Store the instance over
-		iceClient := ice.NewClient(apiEndpoint)
 		instID, err := iceClient.StoreInstance(context.TODO(), inst)
 		if err != nil {
 			return cli.NewExitError("ERROR", 1)
