@@ -4,13 +4,15 @@ import (
 	"net/http"
 	"strings"
 	"testing"
+
+	ice_testing "github.com/glestaris/ice-agent/testing"
 )
 
 func TestMyIP(t *testing.T) {
-	server := newFakeIceServer()
-	server.start()
-	defer server.stop()
-	server.handle(
+	fakeServer := ice_testing.NewFakeIceServer()
+	fakeServer.Start()
+	defer fakeServer.Stop()
+	fakeServer.Handle(
 		http.MethodGet, "/v2/my_ip",
 		func(resp http.ResponseWriter, req *http.Request) {
 			resp.WriteHeader(http.StatusOK)
@@ -20,7 +22,7 @@ func TestMyIP(t *testing.T) {
 		},
 	)
 
-	c := NewClient(server.endpoint())
+	c := NewClient(fakeServer.Endpoint())
 	myIP, err := c.MyIP(nil)
 	if err != nil {
 		t.Fatal(err)
@@ -41,10 +43,10 @@ var myIPErrorTests = []struct {
 
 func TestMyIPErrors(t *testing.T) {
 	for _, test := range myIPErrorTests {
-		server := newFakeIceServer()
-		server.start()
-		defer server.stop()
-		server.handle(
+		fakeServer := ice_testing.NewFakeIceServer()
+		fakeServer.Start()
+		defer fakeServer.Stop()
+		fakeServer.Handle(
 			http.MethodGet, "/v2/my_ip",
 			func(resp http.ResponseWriter, req *http.Request) {
 				resp.WriteHeader(test.httpResponseStatus)
@@ -54,7 +56,7 @@ func TestMyIPErrors(t *testing.T) {
 			},
 		)
 
-		c := NewClient(server.endpoint())
+		c := NewClient(fakeServer.Endpoint())
 		_, err := c.MyIP(nil)
 		if err == nil {
 			t.Error("Expected error, got nil")
@@ -71,10 +73,10 @@ func TestMyIPErrors(t *testing.T) {
 }
 
 func TestStoreInstance(t *testing.T) {
-	server := newFakeIceServer()
-	server.start()
-	defer server.stop()
-	server.handle(
+	fakeServer := ice_testing.NewFakeIceServer()
+	fakeServer.Start()
+	defer fakeServer.Stop()
+	fakeServer.Handle(
 		http.MethodPost, "/v2/instances",
 		func(resp http.ResponseWriter, req *http.Request) {
 			resp.WriteHeader(http.StatusOK)
@@ -86,7 +88,7 @@ func TestStoreInstance(t *testing.T) {
 		},
 	)
 
-	c := NewClient(server.endpoint())
+	c := NewClient(fakeServer.Endpoint())
 	instID, err := c.StoreInstance(nil, Instance{})
 	if err != nil {
 		t.Fatal(err)
@@ -126,10 +128,10 @@ var storeInstnanceErrorTests = []struct {
 
 func TestStoreInstanceErrors(t *testing.T) {
 	for _, test := range storeInstnanceErrorTests {
-		server := newFakeIceServer()
-		server.start()
-		defer server.stop()
-		server.handle(
+		fakeServer := ice_testing.NewFakeIceServer()
+		fakeServer.Start()
+		defer fakeServer.Stop()
+		fakeServer.Handle(
 			http.MethodPost, "/v2/instances",
 			func(resp http.ResponseWriter, req *http.Request) {
 				resp.WriteHeader(test.httpResponseStatus)
@@ -139,7 +141,7 @@ func TestStoreInstanceErrors(t *testing.T) {
 			},
 		)
 
-		c := NewClient(server.endpoint())
+		c := NewClient(fakeServer.Endpoint())
 		_, err := c.StoreInstance(nil, Instance{})
 		if err == nil {
 			t.Error("Expected error, got nil")

@@ -32,7 +32,7 @@ func populateAuthorizedKeys() error {
 		return err
 	}
 
-	testAPub, err := ioutil.ReadFile("../test_assets/test_1.pub")
+	testAPub, err := ioutil.ReadFile("../testing/assets/test_1.pub")
 	if err != nil {
 		return err
 	}
@@ -40,7 +40,7 @@ func populateAuthorizedKeys() error {
 		return err
 	}
 
-	testBPub, err := ioutil.ReadFile("../test_assets/test_1.pub")
+	testBPub, err := ioutil.ReadFile("../testing/assets/test_1.pub")
 	if err != nil {
 		return err
 	}
@@ -69,7 +69,7 @@ func TestAuthorizedFingerprint(t *testing.T) {
 	expectedFingerprint := "30:b6:cb:7e:0b:a3:5a:56:b2:f2:c7:c3:16:1d:2f:db"
 	if fingerprint != expectedFingerprint {
 		t.Fatalf(
-			"Wrong fingerprint for test_assets/test_1.pub: expected `%s`, got `%s`",
+			"Wrong fingerprint for testing/assets/test_1.pub: expected `%s`, got `%s`",
 			expectedFingerprint, fingerprint,
 		)
 	}
