@@ -32,6 +32,7 @@ update-deps:
 
 test:
 	./hack/run-tests
+	./hack/run-tests -i
 
 ###### Code quality ###########################################################
 

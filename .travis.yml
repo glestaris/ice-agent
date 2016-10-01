@@ -8,6 +8,7 @@ install:
   - make deps
   - go get -u github.com/alecthomas/gometalinter
   - gometalinter --install
+  - make docker
 script:
   - make lint
   - make test
