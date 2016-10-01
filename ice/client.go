@@ -10,6 +10,7 @@ import (
 	"io/ioutil"
 	"net"
 	"net/http"
+	"sort"
 	"strings"
 )
 
@@ -63,6 +64,9 @@ func storeInstanceErrorMessage(resp storeInstanceResponse) string {
 		for field, issue := range resp.Issues {
 			parts = append(parts, fmt.Sprintf("`%s`: %s", field, issue))
 		}
+		// Sort the parts of the error message to avoid surprises/flakes with the
+		// test assertions.
+		sort.Sort(sort.StringSlice(parts))
 		errMsg += " (" + strings.Join(parts, ", ") + ")"
 	}
 
