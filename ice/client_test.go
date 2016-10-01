@@ -79,7 +79,7 @@ func TestStoreInstance(t *testing.T) {
 	fakeServer.Handle(
 		http.MethodPost, "/v2/instances",
 		func(resp http.ResponseWriter, req *http.Request) {
-			resp.WriteHeader(http.StatusOK)
+			resp.WriteHeader(http.StatusCreated)
 			if _, err := resp.Write([]byte(`{
 	"_id": "test-id"
 }`)); err != nil {

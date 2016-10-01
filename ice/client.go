@@ -73,6 +73,18 @@ func storeInstanceErrorMessage(resp storeInstanceResponse) string {
 	return errMsg
 }
 
+func checkStortInstanceRespCode(respCode int) bool {
+	if respCode == http.StatusOK {
+		return true
+	}
+
+	if respCode == http.StatusCreated {
+		return true
+	}
+
+	return false
+}
+
 // StoreInstance submits an iCE instance to the iCE server.
 func (i *Client) StoreInstance(ctx context.Context, inst Instance) (string, error) {
 	bodyBuffer := bytes.NewBuffer([]byte{})
@@ -95,7 +107,7 @@ func (i *Client) StoreInstance(ctx context.Context, inst Instance) (string, erro
 		return "", fmt.Errorf("Failed to parse response: %s", err)
 	}
 
-	if resp.StatusCode != http.StatusOK {
+	if !checkStortInstanceRespCode(resp.StatusCode) {
 		errMsg := storeInstanceErrorMessage(respParsed)
 		if errMsg == "" {
 			errMsg = fmt.Sprintf("Erroror: got HTTP response %s", resp.Status)
