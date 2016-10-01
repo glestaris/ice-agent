@@ -19,5 +19,4 @@ type Instance struct {
 	PublicReverseDNS         string            `json:"public_reverse_dns"`
 	SSHUsername              string            `json:"ssh_username"`
 	SSHAuthorizedFingerprint string            `json:"ssh_authorized_fingerprint"`
-	Tags                     []string          `json:"tags"`
 }

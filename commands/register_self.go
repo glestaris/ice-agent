@@ -27,20 +27,14 @@ var RegisterSelfCommand = cli.Command{
 			Name:  "session-id",
 			Usage: "The session id",
 		},
-		cli.StringSliceFlag{
-			Name:  "tag",
-			Usage: "Tags to include in the registered instance",
-		},
 	},
 
 	Action: func(ctx *cli.Context) error {
 		apiEndpoint := ctx.String("api-endpoint")
 		sessionID := ctx.String("session-id")
-		tags := ctx.StringSlice("tag")
 
 		inst := ice.Instance{
 			SessionID: sessionID,
-			Tags:      tags,
 		}
 
 		// SSH
