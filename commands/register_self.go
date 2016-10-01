@@ -2,6 +2,7 @@ package commands
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/glestaris/ice-agent/ice"
 	"github.com/glestaris/ice-agent/network"
@@ -44,41 +45,41 @@ var RegisterSelfCommand = cli.Command{
 		var err error
 		inst.SSHUsername, err = ssh.Username(context.TODO())
 		if err != nil {
-			return cli.NewExitError("ERROR", 1)
+			return cli.NewExitError(fmt.Sprintf("ERROR: %s", err), 1)
 		}
 		inst.SSHAuthorizedFingerprint, err = ssh.AuthorizedFingerprint(
 			context.TODO(), inst.SSHUsername,
 		)
 		if err != nil {
-			return cli.NewExitError("ERROR", 1)
+			return cli.NewExitError(fmt.Sprintf("ERROR: %s", err), 1)
 		}
 
 		iceClient := ice.NewClient(apiEndpoint)
 		// Network
 		inst.Networks, err = network.Networks(context.TODO())
 		if err != nil {
-			return cli.NewExitError("ERROR", 1)
+			return cli.NewExitError(fmt.Sprintf("ERROR: %s", err), 1)
 		}
 		inst.PublicIPAddr, err = iceClient.MyIP(context.TODO())
 		if err != nil {
-			return cli.NewExitError("ERROR", 1)
+			return cli.NewExitError(fmt.Sprintf("ERROR: %s", err), 1)
 		}
 		inst.PublicReverseDNS, err = network.ReverseDNS(
 			context.TODO(), inst.PublicIPAddr.String(),
 		)
 		if err != nil {
-			return cli.NewExitError("ERROR", 1)
+			return cli.NewExitError(fmt.Sprintf("ERROR: %s", err), 1)
 		}
 
 		// Store the instance over
 		instID, err := iceClient.StoreInstance(context.TODO(), inst)
 		if err != nil {
-			return cli.NewExitError("ERROR", 1)
+			return cli.NewExitError(fmt.Sprintf("ERROR: %s", err), 1)
 		}
 
 		// Write the instance ID
 		if err := state.WriteInstanceID(context.TODO(), instID); err != nil {
-			return cli.NewExitError("ERROR", 1)
+			return cli.NewExitError(fmt.Sprintf("ERROR: %s", err), 1)
 		}
 
 		return nil
