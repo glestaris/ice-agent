@@ -2,6 +2,7 @@ package network
 
 import (
 	"context"
+	"net"
 
 	"github.com/glestaris/ice-agent/ice"
 	"github.com/vishvananda/netlink"
@@ -27,8 +28,9 @@ func Networks(ctx context.Context) ([]ice.InstanceNetwork, error) {
 
 		for _, addr := range addrs {
 			res = append(res, ice.InstanceNetwork{
-				Iface:  addr.Label,
-				IPAddr: addr.IP,
+				Iface:           addr.Label,
+				IPAddr:          addr.IP,
+				BroadcastIPAddr: net.ParseIP("0.0.0.0"),
 			})
 		}
 	}

@@ -26,12 +26,14 @@ func TestNetworks(t *testing.T) {
 
 	expectedNets := []ice.InstanceNetwork{
 		ice.InstanceNetwork{
-			Iface:  "lo",
-			IPAddr: net.ParseIP("127.0.0.1"),
+			Iface:           "lo",
+			IPAddr:          net.ParseIP("127.0.0.1"),
+			BroadcastIPAddr: net.ParseIP("0.0.0.0"),
 		},
 		ice.InstanceNetwork{
-			Iface:  "eth0",
-			IPAddr: addrs[0].IP,
+			Iface:           "eth0",
+			IPAddr:          addrs[0].IP,
+			BroadcastIPAddr: net.ParseIP("0.0.0.0"),
 		},
 	}
 
