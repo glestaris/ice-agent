@@ -17,6 +17,8 @@ help:
 	@echo '    test ................................ runs tests in Docker'
 	@echo '    go-vet .............................. runs go vet in grootfs source code'
 	@echo '    lint ................................ lint the Go code'
+	@echo '    docker .............................. build the Docker image'
+	@echo '    docker-push ......................... push the built Docker image'
 
 ###### Dependencies ###########################################################
 
@@ -38,3 +40,11 @@ go-vet:
 
 lint:
 	./hack/lint
+
+###### Docker #################################################################
+
+docker:
+	docker build -t glestaris/ice-agent-test .
+
+docker-push:
+	docker push glestaris/ice-agent-test
