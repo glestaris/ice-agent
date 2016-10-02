@@ -25,11 +25,8 @@ lint_single_dir() {
   debug "--------- Gometalinter output START ---------"
   set +e
   GOOS=linux eval $cmd
-  gmtl_exit_code=$?
   set -e
   debug "--------- Gometalinter output END ---------"
-
-  return $gmtl_exit_code
 }
 
 lint_all() {
