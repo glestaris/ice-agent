@@ -3,3 +3,6 @@
 
 # Dependencies
 /vendor
+
+# Direnv
+/.envrc

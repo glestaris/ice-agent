@@ -24,7 +24,7 @@ lint_single_dir() {
 
   debug "--------- Gometalinter output START ---------"
   set +e
-  GOOS=linux eval $cmd
+  eval $cmd
   set -e
   debug "--------- Gometalinter output END ---------"
 }

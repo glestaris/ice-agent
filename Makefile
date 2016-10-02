@@ -6,7 +6,7 @@
 	lint
 
 all:
-	GOOS=linux go build -o ice-agent .
+	go build -o ice-agent .
 
 ###### Help ###################################################################
 
