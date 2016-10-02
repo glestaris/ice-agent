@@ -2,7 +2,6 @@
 	help \
 	deps update-deps \
 	test \
-	go-vet \
 	lint
 
 all:
@@ -15,7 +14,6 @@ help:
 	@echo '    deps ................................ installs dependencies'
 	@echo '    update-deps ......................... updates dependencies'
 	@echo '    test ................................ runs tests in Docker'
-	@echo '    go-vet .............................. runs go vet in grootfs source code'
 	@echo '    lint ................................ lint the Go code'
 	@echo '    docker .............................. build the Docker image'
 	@echo '    docker-push ......................... push the built Docker image'
@@ -35,9 +33,6 @@ test:
 	./hack/run-tests -i
 
 ###### Code quality ###########################################################
-
-go-vet:
-	GOOS=linux go vet `go list ./... | grep -v vendor`
 
 lint:
 	./hack/lint
