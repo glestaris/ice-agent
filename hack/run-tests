@@ -8,12 +8,12 @@ usage() {
   echo "run-tests               --- run all the tests"
   echo "run-tests -i            --- run integration tests only"
   echo "run-tests -p <Path>     --- only run tests in the givel path"
-  echo "run-tests -n            --- run tests natively"
+  echo "run-tests -n            --- run tests locally, not through Docker"
   echo "run-tests -d            --- debug mode"
   echo "run-tests -h            --- print help menu"
 }
 
-run_docker_tests() {
+run_tests_with_docker() {
   cmd="docker run"
   cmd=$cmd" -v $BASE_PATH:/go/src/github.com/glestaris/ice-agent"
   cmd=$cmd" -w /go/src/github.com/glestaris/ice-agent"
@@ -84,7 +84,7 @@ run_unit_tests() {
 
 run_tests() {
   if [ $NATIVE -eq 0 ]; then
-    run_docker_tests
+    run_tests_with_docker
     return
   fi
 

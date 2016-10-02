@@ -41,7 +41,7 @@ lint_all() {
   popd
 }
 
-run() {
+lint() {
   if [ "$LINT_PATH" != "" ]; then
     lint_single_dir $LINT_PATH
     return
@@ -74,4 +74,4 @@ done
 debug "debug=$DEBUG"
 debug "lint_path='$LINT_PATH'"
 
-run
+lint
