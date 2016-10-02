@@ -12,3 +12,10 @@ install:
 script:
   - make lint
   - make test
+before_deploy: ./ci/make-bintray-descriptor
+deploy:
+  provider: bintray
+  file: ./bintray-descriptor.json
+  user: $BINTRAY_USER
+  key: $BINTRAY_KEY
+  skip_cleanup: true

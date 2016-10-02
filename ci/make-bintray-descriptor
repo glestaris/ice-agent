@@ -1,0 +1,19 @@
+#!/bin/bash
+set -e
+
+# Set variables
+export BINTRAY_VERSION_NAME=$(git describe HEAD)
+date_str=$(date +"%Y-%m-%d")
+time_str=$(date +"%H:%M:%S")
+export BINTRAY_VERSION_DESC="Automatic build on $date_str, $time_str"
+export BINTRAY_VERSION_RELEASED=$date_str
+
+# Log
+echo "BINTRAY_VERSION_NAME='$BINTRAY_VERSION_NAME'"
+echo "BINTRAY_VERSION_DESC='$BINTRAY_VERSION_DESC'"
+echo "BINTRAY_VERSION_RELEASED='$BINTRAY_VERSION_RELEASED'"
+
+# Interpolate
+bintray_descriptor_dest=$PWD/bintray-descriptor.json
+perl -p -e 's/\$\{([^}]+)\}/defined $ENV{$1} ? $ENV{$1} : $&/eg' < ci/bintray-descriptor.tmpl.json > $bintray_descriptor_dest
+echo $bintray_descriptor_dest

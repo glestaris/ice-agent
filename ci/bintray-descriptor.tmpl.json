@@ -1,0 +1,21 @@
+{
+  "package": {
+    "name": "ice-agent",
+    "repo": "iCE",
+    "subject": "glestaris"
+  },
+  "version": {
+    "name": "${BINTRAY_VERSION_NAME}",
+    "desc": "${BINTRAY_VERSION_DESC}",
+    "released": "${BINTRAY_VERSION_RELEASED}",
+    "gpgSign": false
+  },
+  "files": [
+    {
+      "includePattern": "ice-agent",
+      "uploadPattern": "ice-agent"
+    }
+  ],
+  "publish": true
+}
+
