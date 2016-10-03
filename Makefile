@@ -40,7 +40,7 @@ lint:
 ###### Docker #################################################################
 
 docker:
-	docker build -t glestaris/ice-agent-test .
+	docker build -t ice-stuff/ice-agent-test .
 
 docker-push:
-	docker push glestaris/ice-agent-test
+	docker push ice-stuff/ice-agent-test

@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	ice_testing "github.com/glestaris/ice-agent/testing"
+	ice_testing "github.com/ice-stuff/ice-agent/testing"
 )
 
 func TestMyIP(t *testing.T) {

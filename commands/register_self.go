@@ -6,10 +6,10 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/glestaris/ice-agent/ice"
-	"github.com/glestaris/ice-agent/network"
-	"github.com/glestaris/ice-agent/ssh"
-	"github.com/glestaris/ice-agent/state"
+	"github.com/ice-stuff/ice-agent/ice"
+	"github.com/ice-stuff/ice-agent/network"
+	"github.com/ice-stuff/ice-agent/ssh"
+	"github.com/ice-stuff/ice-agent/state"
 	"github.com/urfave/cli"
 )
 

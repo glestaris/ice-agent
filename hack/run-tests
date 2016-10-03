@@ -15,12 +15,12 @@ usage() {
 
 run_tests_with_docker() {
   cmd="docker run"
-  cmd=$cmd" -v $BASE_PATH:/go/src/github.com/glestaris/ice-agent"
-  cmd=$cmd" -w /go/src/github.com/glestaris/ice-agent"
+  cmd=$cmd" -v $BASE_PATH:/go/src/github.com/ice-stuff/ice-agent"
+  cmd=$cmd" -w /go/src/github.com/ice-stuff/ice-agent"
   cmd=$cmd" -u ice"
   cmd=$cmd" --name ice-agent-test"
   cmd=$cmd" --rm"
-  cmd=$cmd" glestaris/ice-agent-test"
+  cmd=$cmd" ice-stuff/ice-agent-test"
   cmd=$cmd" ./hack/run-tests $ARGS -n"
 
   debug "About to run '$cmd'"
@@ -50,7 +50,7 @@ run_integration_tests() {
 
 run_unit_tests() {
   gopath=$(mktemp -d)
-  repo_path=$gopath/src/github.com/glestaris/ice-agent
+  repo_path=$gopath/src/github.com/ice-stuff/ice-agent
 
   mkdir -p $(dirname $repo_path)
   ln -s $PWD $repo_path

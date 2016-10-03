@@ -1,5 +1,5 @@
 os: linux
-package: github.com/glestaris/ice-agent
+package: github.com/ice-stuff/ice-agent
 import:
 - package: github.com/urfave/cli
 - package: golang.org/x/crypto

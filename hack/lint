@@ -32,7 +32,7 @@ lint_single_dir() {
 lint_all() {
   pushd $BASE_PATH
     go list ./... | grep -v vendor | while read pkg; do
-      dir_path="."$(echo $pkg | sed -e 's/github.com\/glestaris\/ice-agent//')
+      dir_path="."$(echo $pkg | sed -e 's/github.com\/ice-stuff\/ice-agent//')
       info "Linting package '$pkg' --> '$dir_path'"
 
       lint_single_dir $dir_path

@@ -1,7 +1,7 @@
 FROM golang:1.7
 
 # Where the code ends up
-VOLUME /go/src/github.com/glestaris/ice-agent
+VOLUME /go/src/github.com/ice-stuff/ice-agent
 
 # User iCE
 RUN useradd -m ice
