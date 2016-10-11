@@ -10,6 +10,7 @@ install:
   - gometalinter --install
   - make docker
 script:
+  - make
   - make lint
   - make test
 before_deploy: ./ci/make-bintray-descriptor
