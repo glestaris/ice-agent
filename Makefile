@@ -4,8 +4,8 @@
 	test \
 	lint
 
-all:
-	go build -o ice-agent .
+ice-agent:
+	CGO_ENABLED=0 go build -ldflags "-s" -o ice-agent .
 
 ###### Help ###################################################################
 
