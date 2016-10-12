@@ -1,8 +1,9 @@
 .PHONY: all \
 	help \
 	deps update-deps \
-	test \
-	lint
+	docker \
+	test lint \
+	clean
 
 ice-agent:
 	CGO_ENABLED=0 go build -ldflags "-s" -o ice-agent .
@@ -16,7 +17,7 @@ help:
 	@echo '    test ................................ runs tests in Docker'
 	@echo '    lint ................................ lint the Go code'
 	@echo '    docker .............................. build the Docker image'
-	@echo '    docker-push ......................... push the built Docker image'
+	@echo '    clean ............................... clean the built artifact'
 
 ###### Dependencies ###########################################################
 
@@ -42,5 +43,7 @@ lint:
 docker:
 	docker build -t ice-stuff/ice-agent-test .
 
-docker-push:
-	docker push ice-stuff/ice-agent-test
+###### Cleanup ################################################################
+
+clean:
+	rm -f ice-agent
