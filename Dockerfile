@@ -7,9 +7,6 @@ VOLUME /go/src/github.com/ice-stuff/ice-agent
 RUN useradd -m ice
 
 # Install testing dependencies
-RUN curl https://glide.sh/get | sh
-RUN go get -u github.com/alecthomas/gometalinter && \
-  gometalinter --install
 RUN curl -o /usr/local/bin/jq -L https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64 && \
   chmod +x /usr/local/bin/jq
 RUN cd /opt && \
