@@ -1,16 +1,18 @@
-hash: 5dfe059d4e6676291317ae25d10a88f74addae53b83cb196b18c6e6955af29e8
-updated: 2016-10-01T17:09:57.471653351+01:00
+hash: 0ea42905e519555cbf92241a706eee3ff84f4056e2a3f1cc3ecfd0cf3f1d9075
+updated: 2016-10-12T21:09:21.730164425+01:00
 imports:
+- name: github.com/glestaris/passwduser
+  version: 9bf69c22d50a4696852dd4e2fd421fa9a0d025c3
 - name: github.com/urfave/cli
-  version: d53eb991652b1d438abdd34ce4bfa3ef1539108e
+  version: 07a425a8e2c37f3e431714c503e55b3c82f93f98
 - name: github.com/vishvananda/netlink
-  version: da7420cab5e209195f5f7387fccd4c7f48758d30
+  version: 07a425a8e2c37f3e431714c503e55b3c82f93f98
   subpackages:
-  - '...'
+  - nl
 - name: github.com/vishvananda/netns
-  version: 8ba1072b58e0c2a240eb5f6120165c7776c3e7b8
+  version: 07a425a8e2c37f3e431714c503e55b3c82f93f98
 - name: golang.org/x/crypto
-  version: 7ac97ebec9cb7ab8b44b571f6ec4cee333dc4309
+  version: 07a425a8e2c37f3e431714c503e55b3c82f93f98
   subpackages:
   - ssh/keys
   - ssh

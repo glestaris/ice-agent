@@ -1,4 +1,3 @@
-os: linux
 package: github.com/ice-stuff/ice-agent
 import:
 - package: github.com/urfave/cli
@@ -7,3 +6,4 @@ import:
   - ssh/keys
 - package: github.com/vishvananda/netlink
 - package: github.com/vishvananda/netns
+- package: github.com/glestaris/passwduser

@@ -6,7 +6,7 @@
 	clean
 
 ice-agent:
-	CGO_ENABLED=0 go build -ldflags "-s" -o ice-agent .
+	CGO_ENABLED=0 go build -ldflags "-s -d -w" -o ice-agent .
 
 ###### Help ###################################################################
 

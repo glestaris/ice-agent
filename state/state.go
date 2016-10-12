@@ -4,8 +4,9 @@ import (
 	"context"
 	"io/ioutil"
 	"os"
-	"os/user"
 	"path/filepath"
+
+	"github.com/glestaris/passwduser"
 )
 
 const iceInstanceIDPath = "/var/run/ice_instance_id"
@@ -19,7 +20,7 @@ func WriteInstanceID(ctx context.Context, instID string) error {
 		return err
 	}
 
-	currentUser, err := user.Current()
+	currentUser, err := passwduser.Current()
 	if err != nil {
 		return err
 	}
