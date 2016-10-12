@@ -38,16 +38,15 @@ var RegisterSelfCommand = cli.Command{
 		}
 
 		// SSH
-		var err error
-		inst.SSHUsername, err = ssh.Username(context.TODO())
-		if err != nil {
-			return cli.NewExitError(fmt.Sprintf("ERROR: %s", err), 1)
-		}
-		inst.SSHAuthorizedFingerprint, err = ssh.AuthorizedFingerprint(
+		sshAuthorizedFingerprint, err := ssh.AuthorizedFingerprint(
 			context.TODO(), inst.SSHUsername,
 		)
-		if err != nil {
-			return cli.NewExitError(fmt.Sprintf("ERROR: %s", err), 1)
+		if err == nil {
+			inst.SSHAuthorizedFingerprint = sshAuthorizedFingerprint
+			inst.SSHUsername, err = ssh.Username(context.TODO())
+			if err != nil {
+				return cli.NewExitError(fmt.Sprintf("ERROR: %s", err), 1)
+			}
 		}
 
 		iceClient := ice.NewClient(apiEndpoint)
