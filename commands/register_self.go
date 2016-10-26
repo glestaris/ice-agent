@@ -53,11 +53,11 @@ var RegisterSelfCommand = cli.Command{
 		if err != nil {
 			return cli.NewExitError(fmt.Sprintf("ERROR: %s", err), 1)
 		}
-		inst.PublicReverseDNS, err = network.ReverseDNS(
+		publicReverseDNS, err := network.ReverseDNS(
 			context.TODO(), inst.PublicIPAddr.String(),
 		)
-		if err != nil {
-			return cli.NewExitError(fmt.Sprintf("ERROR: %s", err), 1)
+		if err == nil {
+			inst.PublicReverseDNS = publicReverseDNS
 		}
 
 		// Store the instance over
