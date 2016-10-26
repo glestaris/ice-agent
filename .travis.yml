@@ -20,3 +20,5 @@ deploy:
   user: $BINTRAY_USER
   key: $BINTRAY_KEY
   skip_cleanup: true
+  on:
+    tags: true
