@@ -51,7 +51,6 @@ teardown() {
   inst_id=$(echo $output | jq '.id' | tr -d '"')
   [ "$inst_id" != "" ]
   [ "$(echo $output | jq '.ssh_authorized_fingerprint' | tr -d '"')" == "30:b6:cb:7e:0b:a3:5a:56:b2:f2:c7:c3:16:1d:2f:db" ]
-  [ "$(echo $output | jq '.ssh_username' | tr -d '"')" == "ice" ]
 }
 
 @test "it conveys useful errors from the iCE registry" {

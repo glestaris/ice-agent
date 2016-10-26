@@ -8,16 +8,6 @@ import (
 	"testing"
 )
 
-func TestUsername(t *testing.T) {
-	username, err := Username(nil)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if username != "ice" {
-		t.Fatalf("Username `%s` does not match `ice`", username)
-	}
-}
-
 func makeAuthorizedKeysFile() (io.WriteCloser, error) {
 	if err := os.Mkdir("/home/ice/.ssh", 0700); err != nil {
 		return nil, err
@@ -61,7 +51,7 @@ func TestAuthorizedFingerprint(t *testing.T) {
 		}
 	}()
 
-	fingerprint, err := AuthorizedFingerprint(nil, "ice")
+	fingerprint, err := AuthorizedFingerprint(nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -76,7 +66,7 @@ func TestAuthorizedFingerprint(t *testing.T) {
 }
 
 func TestAuthorizedFingerprintReturnsErrorWhenNoKeysFileFound(t *testing.T) {
-	_, err := AuthorizedFingerprint(nil, "ice")
+	_, err := AuthorizedFingerprint(nil)
 	if err == nil {
 		t.Error("Expected error, got nil")
 	}
@@ -104,7 +94,7 @@ func TestAuthorizedFingerprintReturnsErrorWhenNoKeysDefined(t *testing.T) {
 		}
 	}()
 
-	_, err = AuthorizedFingerprint(nil, "ice")
+	_, err = AuthorizedFingerprint(nil)
 	if err == nil {
 		t.Error("Expected error, got nil")
 	}
@@ -136,7 +126,7 @@ func TestAuthorizedFingerprintReturnsErrorWhenKeysFileIsInvalid(t *testing.T) {
 		}
 	}()
 
-	_, err = AuthorizedFingerprint(nil, "ice")
+	_, err = AuthorizedFingerprint(nil)
 	if err == nil {
 		t.Error("Expected error, got nil")
 	}

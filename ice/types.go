@@ -17,6 +17,5 @@ type Instance struct {
 	Networks                 []InstanceNetwork `json:"networks"`
 	PublicIPAddr             net.IP            `json:"public_ip_addr"`
 	PublicReverseDNS         string            `json:"public_reverse_dns"`
-	SSHUsername              string            `json:"ssh_username"`
 	SSHAuthorizedFingerprint string            `json:"ssh_authorized_fingerprint"`
 }

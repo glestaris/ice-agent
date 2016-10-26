@@ -16,16 +16,6 @@ import (
 	"golang.org/x/crypto/ssh"
 )
 
-// Username returns the username of the running user.
-func Username(ctx context.Context) (string, error) {
-	currentUser, err := passwduser.Current()
-	if err != nil {
-		return "", err
-	}
-
-	return currentUser.Username, nil
-}
-
 func firstAuthorizedKeysLine(authorizedKeysPath string) ([]byte, error) {
 	authorizedKeysFile, err := os.Open(authorizedKeysPath)
 	if err != nil {
@@ -86,7 +76,7 @@ func fingerprint(pk ssh.PublicKey) string {
 
 // AuthorizedFingerprint returns the MD5 fingerprint of the first public SSH
 // key defined in ~/.ssh/authorized_keys.
-func AuthorizedFingerprint(ctx context.Context, sshUsername string) (string, error) {
+func AuthorizedFingerprint(ctx context.Context) (string, error) {
 	currentUser, err := passwduser.Current()
 	if err != nil {
 		return "", err
