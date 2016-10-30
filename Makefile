@@ -1,7 +1,7 @@
 .PHONY: all \
 	help \
 	deps update-deps \
-	docker \
+	docker push-docker \
 	test lint \
 	clean
 
@@ -17,6 +17,7 @@ help:
 	@echo '    test ................................ runs tests in Docker'
 	@echo '    lint ................................ lint the Go code'
 	@echo '    docker .............................. build the Docker image'
+	@echo '    push-docker ......................... push the Docker image to Dockerhub'
 	@echo '    clean ............................... clean the built artifact'
 
 ###### Dependencies ###########################################################
@@ -42,6 +43,9 @@ lint:
 
 docker:
 	docker build -t glestaris/ice-agent-ci .
+
+push-docker:
+	docker push glestaris/ice-agent-ci
 
 ###### Cleanup ################################################################
 
