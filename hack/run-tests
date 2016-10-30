@@ -44,9 +44,28 @@ run_native_tests() {
 }
 
 run_integration_tests() {
+  info "Building ice-agent..."
   make clean
   make
-  bats $BASE_PATH/testing/integration.bats -t
+
+  cmd="bats"
+  cmd=$cmd" --tap"
+  if [ "$TEST_PATH" != "" ]; then
+    cmd=$cmd" $TEST_PATH"
+  else
+    cmd=$cmd" $BASE_PATH/testing/integration/*.bats"
+  fi
+
+  debug "About to run '$cmd'"
+  info "--------- BATS output START ---------"
+
+  set +e
+  eval $cmd
+  GOTEST_EXIT_CODE=$?
+  set -e
+
+  info "--------- BATS output END ---------"
+  info "BATS exited with code $GOTEST_EXIT_CODE"
 }
 
 run_unit_tests() {
@@ -69,15 +88,15 @@ run_unit_tests() {
 
   cd $repo_path
   debug "About to run '$cmd' in directory '$repo_path'"
-  debug "--------- go test output START ---------"
+  info "--------- go test output START ---------"
 
   set +e
   eval $cmd
   GOTEST_EXIT_CODE=$?
   set -e
 
-  debug "--------- go test output END ---------"
-  debug "go test exited with code $GOTEST_EXIT_CODE"
+  info "--------- go test output END ---------"
+  info "go test exited with code $GOTEST_EXIT_CODE"
 
   cd /
   rm -rf $gopath
