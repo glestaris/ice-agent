@@ -46,7 +46,7 @@ run_native_tests() {
 run_integration_tests() {
   make clean
   make
-  bats $BASE_PATH/testing/integration.bats
+  bats $BASE_PATH/testing/integration.bats -t
 }
 
 run_unit_tests() {
