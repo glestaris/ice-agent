@@ -41,7 +41,7 @@ lint:
 ###### Docker #################################################################
 
 docker:
-	docker build -t ice-stuff/ice-agent-test .
+	docker build -t glestaris/ice-agent-ci .
 
 ###### Cleanup ################################################################
 

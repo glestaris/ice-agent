@@ -20,7 +20,7 @@ run_tests_with_docker() {
   cmd=$cmd" -u ice"
   cmd=$cmd" --name ice-agent-test"
   cmd=$cmd" --rm"
-  cmd=$cmd" ice-stuff/ice-agent-test"
+  cmd=$cmd" glestaris/ice-agent-ci"
   cmd=$cmd" ./hack/run-tests $ARGS -n"
 
   debug "About to run '$cmd'"
