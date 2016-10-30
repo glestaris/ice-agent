@@ -18,4 +18,5 @@ type Instance struct {
 	PublicIPAddr             net.IP            `json:"public_ip_addr"`
 	PublicReverseDNS         string            `json:"public_reverse_dns"`
 	SSHAuthorizedFingerprint string            `json:"ssh_authorized_fingerprint"`
+	Tags                     map[string]string `json:"tags"`
 }

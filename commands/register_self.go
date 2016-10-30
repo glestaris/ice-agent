@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/ice-stuff/ice-agent/ice"
 	"github.com/ice-stuff/ice-agent/network"
@@ -27,14 +28,25 @@ var RegisterSelfCommand = cli.Command{
 			Name:  "session-id",
 			Usage: "The session id",
 		},
+		cli.StringSliceFlag{
+			Name:  "tag",
+			Usage: "An instnace tag in the form of <key>=<value>",
+		},
 	},
 
 	Action: func(ctx *cli.Context) error {
 		apiEndpoint := ctx.String("api-endpoint")
 		sessionID := ctx.String("session-id")
+		tagsList := ctx.StringSlice("tag")
+
+		tags, err := parseTags(tagsList)
+		if err != nil {
+			return cli.NewExitError(fmt.Sprintf("ERROR: %s", err), 1)
+		}
 
 		inst := ice.Instance{
 			SessionID: sessionID,
+			Tags:      tags,
 		}
 
 		// SSH
@@ -79,4 +91,19 @@ var RegisterSelfCommand = cli.Command{
 
 		return nil
 	},
+}
+
+func parseTags(tagsList []string) (map[string]string, error) {
+	m := make(map[string]string)
+
+	for _, tag := range tagsList {
+		parts := strings.SplitN(tag, "=", 2)
+		if len(parts) != 2 {
+			return nil, fmt.Errorf("invalid tag provided `%s`", tag)
+		}
+
+		m[parts[0]] = parts[1]
+	}
+
+	return m, nil
 }
