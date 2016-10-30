@@ -53,22 +53,37 @@ type storeInstanceResponse struct {
 
 	// in case of a failure
 	Error  storeInstanceResponseError `json:"_error"`
-	Issues map[string]string          `json:"_issues"`
+	Issues json.RawMessage            `json:"_issues"`
 }
 
 func storeInstanceErrorMessage(resp storeInstanceResponse) string {
 	errMsg := resp.Error.Message
 
-	if len(resp.Issues) > 0 {
-		parts := []string{}
-		for field, issue := range resp.Issues {
-			parts = append(parts, fmt.Sprintf("`%s`: %s", field, issue))
-		}
-		// Sort the parts of the error message to avoid surprises/flakes with the
-		// test assertions.
-		sort.Sort(sort.StringSlice(parts))
-		errMsg += " (" + strings.Join(parts, ", ") + ")"
+	var parsedIssues map[string]interface{}
+	if err := json.Unmarshal(resp.Issues, &parsedIssues); err != nil {
+		return errMsg
 	}
+
+	if len(parsedIssues) == 0 {
+		return errMsg
+	}
+
+	parts := []string{}
+	for field, issue := range parsedIssues {
+		switch concrete := issue.(type) {
+		case string:
+			parts = append(parts, fmt.Sprintf("`%s`: %s", field, concrete))
+		case []interface{}: // []string
+			for _, subissue := range concrete {
+				parts = append(parts, fmt.Sprintf("`%s`: %v", field, subissue))
+			}
+		}
+	}
+
+	// Sort the parts of the error message to avoid surprises/flakes with the
+	// test assertions.
+	sort.Sort(sort.StringSlice(parts))
+	errMsg += " (" + strings.Join(parts, ", ") + ")"
 
 	return errMsg
 }
@@ -110,7 +125,7 @@ func (i *Client) StoreInstance(ctx context.Context, inst Instance) (string, erro
 	if !checkStortInstanceRespCode(resp.StatusCode) {
 		errMsg := storeInstanceErrorMessage(respParsed)
 		if errMsg == "" {
-			errMsg = fmt.Sprintf("Erroror: got HTTP response %s", resp.Status)
+			errMsg = fmt.Sprintf("Error: got HTTP response %s", resp.Status)
 		}
 		return "", errors.New(errMsg)
 	}

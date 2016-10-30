@@ -124,6 +124,15 @@ var storeInstnanceErrorTests = []struct {
 }`,
 		"`key_a`: issue_a, `key_b`: issue_b",
 	},
+	{
+		http.StatusBadRequest, `{
+	"_issues": {
+		"key_a": ["issue_a_1", "issue_a_2"],
+		"key_b": "issue_b"
+	}
+}`,
+		"`key_a`: issue_a_1, `key_a`: issue_a_2, `key_b`: issue_b",
+	},
 }
 
 func TestStoreInstanceErrors(t *testing.T) {
