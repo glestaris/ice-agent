@@ -4,7 +4,7 @@ services:
 language: go
 go: 1.7
 install:
-  - curl https://glide.sh/get | sh
+  - go get github.com/Masterminds/glide
   - make deps
   - go get -u github.com/alecthomas/gometalinter
   - gometalinter --install
